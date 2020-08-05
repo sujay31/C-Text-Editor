@@ -35,6 +35,8 @@ char* getName();
 int checkName(char name[100]);
 void editByRewrite(FILE *fp);
 void saveChanges(FILE *fp, char name[100]);
+void editByAdd(FILE *fp);
+void readFromFile(FILE *fp, char name[100]);
 
 /* displays home page as landing page. */
 int main() 
@@ -47,6 +49,8 @@ int main()
         writeAndSave(fp);
     else if(task==2)
         editByRewrite(fp);       
+    else if(task==3)
+        editByAdd(fp);
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -71,10 +75,7 @@ int acceptChoice()
         if(val==1)
             return 2;
         else if(val==2)
-        {
-            printf("\033[1;33m Feature will be added \033[0m \n");
-            exit(0);
-        }
+            return 3;
         else
         {
             printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -109,7 +110,7 @@ void writeAndSave(FILE *fp)
 
     acceptInput();                      
     str=correctInput();
-    system("clear");     
+    system("clear");                 
     makeFile(fp);                       
     displayFile(fp, "interface.txt");   
     fp=fopen("interface.txt", "w");
@@ -315,7 +316,7 @@ char* getName()
     int check_val=0;
 
     /* file name can have only letters or digits. No extension or special character is allowed. */
-    printf("\n \033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
+    printf("\033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
     scanf("%s", name);
     while(check_val==0)
     {
@@ -406,4 +407,64 @@ void saveChanges(FILE *fp, char name[100])
     free(str);
     name=NULL;
     free(name);
+}
+
+/* edit an existing file by adding text at the end of file by calling suitable functions. */
+void editByAdd(FILE *fp)
+{
+    int val;
+    char*name=NULL;
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();                     
+    readFromFile(fp, name);             
+    acceptInput();                      
+    str=correctInput();                 
+    saveChanges(fp, name);              
+    name=NULL;
+    free(name);
+}
+
+/* reads text from a given file(new line is replaced by ..)*/
+void readFromFile(FILE *fp, char name[100])
+{
+    char ch;
+    fp=fopen(name, "r");
+    if(fp==NULL)
+    {
+        printf("\033[1;31m FILE CANNOT BE OPENED IN READ MODE. MAYBE THE FILE DOESN'T EXIST. \033[0m \n");
+        exit(1);
+    }
+    str=malloc(size);
+    str[0]='\0';
+    ch=fgetc(fp);
+    for(int i=0; i<2; i++)
+        str[i]='.';
+    for(int i=2; ch!=EOF && ch!='\0'; i++)
+    {
+        str[i]=ch;
+        
+        /* replaces new line with .. */
+        if(ch=='\n')
+        {
+            if(str[i-1]=='.')
+                str[i]='.';
+            else
+            {
+                str[i]='.';
+                i++;
+                str[i]='.';
+            }    
+        }
+
+        /* size is increased to accomodate any length of user input. */
+        if(size-strlen(str)==1)
+        {
+            size+=100;
+            str=realloc(str,size);
+        }
+
+        ch=fgetc(fp);
+    }
+    fclose(fp);
 }
