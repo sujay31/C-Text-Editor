@@ -108,7 +108,8 @@ void writeAndSave(FILE *fp)
         str[i]='.';
 
     acceptInput();                      
-    str=correctInput();                 
+    str=correctInput();
+    system("clear");     
     makeFile(fp);                       
     displayFile(fp, "interface.txt");   
     fp=fopen("interface.txt", "w");
@@ -198,14 +199,11 @@ char* correctInput()
 /* calls suitable functions to write text and make a border around it. */
 void makeFile(FILE *fp)
 {
-    system("clear");
-    printf("\n");
     moveOffsetVertical(fp, 5);      
     makeHorizontalLine(fp);         
     makeVerticalLine(fp);           
     makeHorizontalLine(fp);         
     moveOffsetVertical(fp, 5);      
-    
 }
 
 /* moves the file pointer vertically down by given(i) lines. */
@@ -389,11 +387,15 @@ void saveChanges(FILE *fp, char name[100])
     if (val==1)
     {
         fp=fopen(name, "w");
+        FILE *hp;
+        hp=fopen("interface.txt", "w");
         if(fp==NULL)
         {
             printf("\033[1;31m UNABLE TO PERFORM TASK. \033[0m \n");
             exit(1);
         }
+        makeFile(hp);
+        displayFile(hp, "interface.txt");
         fputs(str, fp);
         fclose(fp);
         printf("\033[1;32m CHANGES HAVE BEEN SAVED. \033[0m \n");
