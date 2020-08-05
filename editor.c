@@ -33,6 +33,8 @@ void displayFile(FILE *fp, char name[100]);
 void saveFile(char orig[100]);
 char* getName();
 int checkName(char name[100]);
+void editByRewrite(FILE *fp);
+void saveChanges(FILE *fp, char name[100]);
 
 /* displays home page as landing page. */
 int main() 
@@ -43,6 +45,8 @@ int main()
     int task=acceptChoice();     
     if(task==1)
         writeAndSave(fp);
+    else if(task==2)
+        editByRewrite(fp);       
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -53,12 +57,30 @@ int main()
 int acceptChoice()
 {
     char choice;
+    int val;
     printf("\033[1;33m ENTER W FOR WRITING, E FOR EDITING, S FOR RESAVING AN EXISTING FILE, F TO FIND A WORD, C TO COMPARE TWO FILES AND D TO DELETE A FILE. \033[0m \n");
     scanf("%c", &choice);
     
     /* comparison done is case insensitive so that there are lass chances of rejecting user's choice of task. */
     if(choice=='W' || choice=='w')
         return 1;
+    else if(choice=='E' || choice=='e')
+    {
+        printf("\033[1;33m ENTER 1 TO REWRITE FILE OR 2 TO ADD MORE TEXT. \033[0m \n");
+        scanf("%d", &val);
+        if(val==1)
+            return 2;
+        else if(val==2)
+        {
+            printf("\033[1;33m Feature will be added \033[0m \n");
+            exit(0);
+        }
+        else
+        {
+            printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
+            exit(1);
+        }
+    }
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -329,4 +351,57 @@ int checkName(char name[100])
 
     }
     return 1;
+}
+
+/* rewrites the contents of an existing file by calling suitable functions. */
+void editByRewrite(FILE *fp)
+{
+    int val;
+    char*name=NULL;
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();                 
+    fp=fopen(name, "r");
+    if(fp==NULL)
+    {
+        printf("\033[1;31m FILE CANNOT BE OPENED IN READ MODE. MAYBE THE FILE DOESN'T EXIST. \033[0m \n");
+        exit(1);
+    }
+    fclose(fp);
+    str=malloc(size);
+    str[0]='\0';
+    for(int i=0; i<2; i++)
+        str[i]='.';
+    acceptInput();                  
+    str=correctInput();             
+    saveChanges(fp, name);          
+    name=NULL;
+    free(name);
+}
+
+/* saves the user input with a name of his choice. */
+void saveChanges(FILE *fp, char name[100])
+{
+    int val;
+    system("clear");
+    printf("\033[1;33m DO YOU WANT TO SAVE CHANGES? TYPE 1 FOR YES AND 2 FOR NO. \033[0m \n");
+    scanf("%d", &val);
+    if (val==1)
+    {
+        fp=fopen(name, "w");
+        if(fp==NULL)
+        {
+            printf("\033[1;31m UNABLE TO PERFORM TASK. \033[0m \n");
+            exit(1);
+        }
+        fputs(str, fp);
+        fclose(fp);
+        printf("\033[1;32m CHANGES HAVE BEEN SAVED. \033[0m \n");
+    }
+    else
+        printf("\033[1;31m CHANGES HAVE BEEN DISCARDED. FILE IS UNCHANGED. \033[0m \n");
+    str=NULL;
+    free(str);
+    name=NULL;
+    free(name);
 }
