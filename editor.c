@@ -37,7 +37,10 @@ void editByRewrite(FILE *fp);
 void saveChanges(FILE *fp, char name[100]);
 void editByAdd(FILE *fp);
 void readFromFile(FILE *fp, char name[100]);
-void saveAs(FILE *fp);
+void saveAs(FILE *fp);;
+void findWordOrPattern(FILE *fp);
+void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] );
+void displaySearchResult(FILE *fp, char name[100]);
 
 /* displays home page as landing page. */
 int main() 
@@ -53,7 +56,9 @@ int main()
     else if(task==3)
         editByAdd(fp);
     else if(task==4)
-        saveAs(fp);  
+        saveAs(fp);
+    else if(task==5)
+        findWordOrPattern(fp);  
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -87,6 +92,8 @@ int acceptChoice()
     }
     else if(choice=='S' || choice=='s')
         return 4;
+    else if(choice=='F' || choice=='f')
+        return 5;
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -505,4 +512,104 @@ void saveAs(FILE *fp)
     sprintf(buf2, "cp %s %s", name, "duplicate.txt");
     system(buf2);
     saveFile("duplicate.txt");                      
+}
+
+void findWordOrPattern(FILE *fp)
+{
+    /* only a word/pattern of length upto 25 characters can be searched. */
+    char word_to_search[25];
+
+    printf("\033[1;33m WORD/PATTERN TO SEARCH FOR. \033[0m \n");
+    scanf("%s", word_to_search);
+    char*name=NULL;
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();                                 
+    readFromFile(fp, name);                         
+    str=correctInput();                             
+    makeSearchResult(fp,name, word_to_search);      
+    displaySearchResult(fp, "search.txt");          
+}
+
+/* stores search results in search.txt */
+void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
+{
+    int i, j, word, flag=0;
+
+    /* ***file searched should not contain more than 1000 words.***
+      ***max length of a word is taken to be 30 characters.*** */
+    char new_str[1000][30];
+    printf("%s \n", new_str[0]);
+    fp=fopen("search.txt", "w");
+    if(fp==NULL)
+    {
+        printf("\033[1;31m UNABLE TO PERFORM TASK. \033[0m \n");
+        exit(1);
+    }
+    j=0; word=0;
+    for(i=0;i<=(strlen(str));i++)
+    {
+        if(str[i]==' '||str[i]=='\0')
+        {
+            new_str[word][j]='\0';
+            if(strstr(new_str[word],word_to_search))
+            {
+                fputs("\033[1;32m ", fp);
+                
+                /* flag helps in adding color if word formed matches searched word. */
+                flag=1;
+            }
+            fputs(new_str[word], fp);
+            fputc(' ', fp);
+            if(flag==1)
+            {
+                flag=0;
+                fputs(" \033[0m", fp);
+            }
+            word++;
+            j=0;
+        }
+        else
+        {
+            new_str[word][j]=str[i];
+            j++;
+        }
+    }
+    str=NULL;
+    free(str);
+    fclose(fp);
+}
+
+/* displays and saves search results as per the user's wish. */
+void displaySearchResult(FILE *fp, char name[100])
+{
+    int val;
+    char buf[200];
+    sprintf(buf, "cat %s", name);
+    printf("\033[1;33m DO YOU WANT TO SEE THE SEARCH RESULT? TYPE 1 FOR YES AND 2 FOR NO. \033[0m \n");
+    scanf("%d", &val);
+    if (val==1)
+        system(buf);
+    else
+    {
+        printf("\033[1;31m TASK TERMINATED. \033[0m \n"); 
+        exit(1);
+    }
+    printf("\n \033[1;33m DO YOU WANT TO STORE THE SEARCH RESULT? TYPE 1 FOR YES AND 2 FOR NO. \033[0m \n");
+    scanf("%d", &val);
+    if (val==1)
+    {
+        name=getName();                             
+        rename("search.txt", name);
+    }
+    else 
+    {    
+        val=remove("search.txt");
+        if(val==1)
+        {    
+            printf("\033[1;31m SEARCH RESULTS NOT DELETED. \033[0m");
+            exit(1);
+        }
+    }
+    printf("\033[1;33m TASK DONE. \033[0m \n"); 
 }
