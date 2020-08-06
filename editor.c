@@ -43,6 +43,7 @@ void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] );
 void displaySearchResult(FILE *fp, char name[100]);
 void compareFiles(FILE *fp);
 char* getData(FILE *fp);
+void deleteFile(FILE *fp);
 
 /* displays home page as landing page. */
 int main() 
@@ -63,6 +64,8 @@ int main()
         findWordOrPattern(fp);  
     else if(task==6)
         compareFiles(fp);
+    else if(task==7)
+        deleteFile(fp);
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -100,6 +103,8 @@ int acceptChoice()
         return 5;
     else if(choice=='C' || choice=='c')
         return 6;
+    else if(choice=='D' || choice=='d')
+        return 7;
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -660,3 +665,44 @@ char* getData(FILE *fp)
     free(name);
     return data_of_file;
 }
+
+/* deletes an existing file. */
+void deleteFile(FILE *fp)
+{
+    int val;
+    int conf;
+    char *name=NULL;
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();                                 /* function definition is on line 354. */
+    fp=fopen(name, "r");
+    if(fp==NULL)
+    {
+        printf("\033[1;31m FILE CANNOT BE OPENED IN READ MODE. MAYBE THE FILE DOESN'T EXIST. \033[0m \n");
+        exit(1);
+    }
+    fclose(fp);
+    printf("\033[1;33m ARE YOU SURE? 1 FOR YES AND 2 FOR NO. \033[0m \n");
+    scanf("%d", &conf);
+    system("clear");
+    if(conf==1)
+    {
+        val=remove(name);
+        if(val==0)
+            printf("\033[1;32m FILE HAS BEEN DELETED. \033[0m \n");
+        else
+        {
+            printf("\033[1;31m FILE CANNOT BE DELETED. \033[0m \n");
+            exit(1);
+        }
+    }
+    else if(conf==2)
+        printf("\033[1;33m TASK TERMINATED. \033[0m \n");
+    else
+    {
+        printf("\033[1;31m INVALID CHOICE. \033[0m \n");
+        exit(1);
+    }
+}
+
+/* ******THANK YOU. ****** */
