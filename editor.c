@@ -41,6 +41,8 @@ void saveAs(FILE *fp);;
 void findWordOrPattern(FILE *fp);
 void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] );
 void displaySearchResult(FILE *fp, char name[100]);
+void compareFiles(FILE *fp);
+char* getData(FILE *fp);
 
 /* displays home page as landing page. */
 int main() 
@@ -59,6 +61,8 @@ int main()
         saveAs(fp);
     else if(task==5)
         findWordOrPattern(fp);  
+    else if(task==6)
+        compareFiles(fp);
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -94,6 +98,8 @@ int acceptChoice()
         return 4;
     else if(choice=='F' || choice=='f')
         return 5;
+    else if(choice=='C' || choice=='c')
+        return 6;
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -612,4 +618,45 @@ void displaySearchResult(FILE *fp, char name[100])
         }
     }
     printf("\033[1;33m TASK DONE. \033[0m \n"); 
+}
+
+/* compares the contents of two files. */
+void compareFiles(FILE *fp)
+{
+    char *data_of_file1=NULL, *data_of_file2=NULL;
+    data_of_file1=malloc(size);
+    data_of_file1[0]='\0';
+    data_of_file1=getData(fp);                      
+    data_of_file2=malloc(size);
+    data_of_file2[0]='\0';
+    data_of_file2=getData(fp);                      
+    system("clear");
+    if(strcmp(data_of_file1, data_of_file2)==0)
+        printf("\033[1;32m THE TWO FILES ARE EXACTLY SAME. \033[0m \n");
+    else
+        printf("\033[1;31m THE TWO FILES ARE NOT EXACTLY SAME. \033[0m \n");
+    data_of_file1=NULL;
+    free(data_of_file1);
+    data_of_file2=NULL;
+    free(data_of_file2);
+}
+
+/* gets the data stored in a given file. */
+char* getData(FILE *fp)
+{
+    char *name=NULL, *data_of_file=NULL;
+    data_of_file=malloc(size);
+    data_of_file[0]='\0';
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();
+    readFromFile(fp, name); 
+    str=correctInput();     
+    data_of_file=malloc(size);
+    strcpy(data_of_file, str);
+    str=NULL;
+    free(str);
+    name=NULL;
+    free(name);
+    return data_of_file;
 }
