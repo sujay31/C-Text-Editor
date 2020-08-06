@@ -37,6 +37,7 @@ void editByRewrite(FILE *fp);
 void saveChanges(FILE *fp, char name[100]);
 void editByAdd(FILE *fp);
 void readFromFile(FILE *fp, char name[100]);
+void saveAs(FILE *fp);
 
 /* displays home page as landing page. */
 int main() 
@@ -51,6 +52,8 @@ int main()
         editByRewrite(fp);       
     else if(task==3)
         editByAdd(fp);
+    else if(task==4)
+        saveAs(fp);  
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -82,6 +85,8 @@ int acceptChoice()
             exit(1);
         }
     }
+    else if(choice=='S' || choice=='s')
+        return 4;
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
@@ -316,7 +321,7 @@ char* getName()
     int check_val=0;
 
     /* file name can have only letters or digits. No extension or special character is allowed. */
-    printf("\033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
+    printf("\n \033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
     scanf("%s", name);
     while(check_val==0)
     {
@@ -467,4 +472,37 @@ void readFromFile(FILE *fp, char name[100])
         ch=fgetc(fp);
     }
     fclose(fp);
+}
+
+/* creates a duplicate of an existing files and saves it with a new name. */
+void saveAs(FILE *fp)
+{
+    int val;
+    char buf1[200], buf2[200];
+    char *name=NULL;
+    name=malloc(100*sizeof(char));
+    name[0]='\0';
+    name=getName();                         
+    fp=fopen(name, "r");
+    if(fp==NULL)
+    {
+        printf("\033[1;31m FILE CANNOT BE OPENED IN READ MODE. MAYBE THE FILE DOESN'T EXIST. \033[0m \n");
+        exit(1);
+    }
+    readFromFile(fp, name);
+    str=correctInput();
+    FILE *hp;
+    hp = fopen("interface.txt", "w");
+    if(hp==NULL)
+    {
+        printf("\033[1;31m UNABLE TO PERFORM TASK. \033[0m \n");
+        exit(1);
+    }
+    system("clear");
+    makeFile(hp);
+    displayFile(hp, "interface.txt");
+    fclose(fp);
+    sprintf(buf2, "cp %s %s", name, "duplicate.txt");
+    system(buf2);
+    saveFile("duplicate.txt");                      
 }
