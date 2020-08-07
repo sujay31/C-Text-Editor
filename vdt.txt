@@ -1,0 +1,130 @@
+Global Variables
+
+1)	*str	 char	 pointer to variable storing user input
+2)	size 	 int 	 stores size of "str" variable
+
+#main()
+
+3)	*fp 	FILE	 it is the file pointer to which the stream gets associated 
+4)	task 	int 	 stores the choice of the user
+
+#acceptChoice()
+
+5)	choice  char	 accepts the choice of the user for text editor features
+6)	val 	int 	 accepts the choice to rewrite file or to add more text
+
+#writeAndSave()
+
+7)	i	 int    used for creating a loop
+
+#acceptInput()
+
+8) 	buf_size  int   used for defining the maximum size of strings 
+9)	buf[]     str   buffer string used to store the input string
+10)	inp[]	  str	accepts the input string
+11)	i	  int	used to run the loop
+
+#correctInput()
+
+12)	ch	  char	used to replace character from str[] in the loop
+13)	*new_st	  str	pointer to variable stored after replacing occurrences of '\n' and .. by space and new line respectively from "str"
+14)	ind	  int	used for creating a loop
+15) 	i	  int	used for creating a loop
+
+#moveOffsetVertical()
+
+16)	j 	 int	used for creating a loop
+
+#moveOffsetHorizontal()
+
+17)	j	 int	used for creating a loop
+
+#makeVerticalLine()
+
+18)	ch	char	used for checking characters in "str" in a loop
+19)	i	int	used for creating a loop
+20)	j	int	used for creating a loop
+21)	ind	int	used for creating a while loop
+
+#addLine()
+
+22) 	i	int	used for creating a loop 
+
+#displayFile()
+
+23) 	val	int	accepts the choice whether to see what has written or not 
+24)	buf[]	str	accepts the name of the file to be displayed on screen
+
+#saveFile()
+
+25)	*name 	char	pointer to variable accepting the name of file to be saved	
+
+#getName()
+
+26)	*name	char	pointer to a variable storing user input
+27)	check_val   int	 used in creating a condition statement		
+
+#checkName()
+
+28)	ch 	char	checks the existence of special character in name provided
+29) 	i	int	used for creating a loop
+
+#editByRewrite()
+	
+30)	*name	char	pointer to a variable storing user input 
+31) 	i   	int  	used for creating a loop
+	
+#saveChanges()
+
+32)	val 	int	accept the choice to save changes or not 
+33)	*hp	FILE 	it is the file pointer used to open user requested file 
+
+#editByAdd()
+
+34)	*name	char	pointer to variable storing user input
+
+#readFromFile()
+
+35)	ch 	char	accepts the character from the file
+36)	i 	int 	used for creating a loop
+
+#saveAs()
+
+37)	buf1[]	str	
+40)	buf2[]	str
+41)	*name	char	pointer to variable storing user input
+42)	*hp	FILE	it is the file pointer which is created as a duplicate   
+
+#findWordOrPattern()
+
+43) 	word_to_search[]	char	accepts the patter to be searched by user 
+44)	*name	char	pointer to variable storing user input
+
+#makeSearchResult()
+
+45)	i 	int 	used for creating a loop
+46) 	j 	int 	used for creating a loop
+47)	word	int	used for creating a loop
+48)	flag	int	used in adding color 
+49)	new_str[][]	char accepts the user input 
+
+#displaySearchResult()
+
+50)	val	int	accepts the choice to see the searched results or not
+51)	buf[]	char	used to save the data of file
+	
+#compareFiles()
+
+52)	*data_of_file1	char	pointer to variable storing data of a file
+53)	*data_of_file2	char	pointer to variable storing data of a file
+
+#getData()
+
+54)	*name	char	pointer to variable storing user input for file name
+55)	*data_of_file	char	pointer to variable storing data stored in a file
+
+#deleteFile()
+
+56)	val	int	checks whether the loop to be deleted or not
+57)	conf	int	accepts the choice to delete the file or not 
+58)	*name	char	pointer to variable storing user input for filename
