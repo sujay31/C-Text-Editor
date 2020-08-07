@@ -44,6 +44,7 @@ void displaySearchResult(FILE *fp, char name[100], int occ);
 void compareFiles(FILE *fp);
 char* getData(FILE *fp);
 void deleteFile(FILE *fp);
+void addAtPositon(FILE *fp);
 
 /* displays home page as landing page. */
 int main() 
