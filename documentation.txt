@@ -1,0 +1,159 @@
+Documentation Of User Defined Functions
+
+1) int acceptChoice()
+   return type - int
+   function parameters -  -
+   function accepts user's choice of task and sends the corresponding value to main
+
+
+2) void writeAndSave(FILE *fp)
+   return type - void
+   function parameters - var1(pointer of FILE type)
+   function calls suitable functions to accept text entered by user and save it
+
+
+3) void acceptInput()
+   return type - void
+   function parameters -  -
+   function accepts text input from the user in the desired format
+
+
+4) char* correctInput()
+   return type - string
+   function parameters - -
+   function replaces all occurrences of '\n' and .. by space and new line respectively
+ 
+  
+5) void makeFile(FILE *fp)
+   return type - void
+   function parameters -  var1(pointer of FILE type)
+   function calls suitable functions to write text and make a border around it
+
+
+6) void moveOffsetVertical(FILE *fp,int i)
+   return type - void
+   function parameters -  var1(pointer of FILE type) , var2(int)
+   function moves the file pointer vertically down by given(i) lines
+
+7) void makeHorizontalLine(FILE *fp)
+   return type - void
+   function parameters -  var1(pointer of FILE type)
+   function makes a complete line of '*' border
+
+
+8) void moveOffsetHorizontal(FILE *fp,int i, char ch)
+   return type - void
+   function parameters -  var1(pointer of FILE type) , var2(int) , var3(char) 
+   function moves the file pointer horizontally by putting a given character(ch) a fixed no.(i) of times
+
+
+9) void beginLine(FILE *fp)
+   return type - void
+   function parameters -  var1(pointer of FILE type)
+   function moves the file pointer horizontally by 28 spaces and puts a '*'
+
+
+10) void endLine(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function puts a '*' and sends the file pointer to the next line
+
+
+11) void makeVerticalLine(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function writes 101 characters inside both the sides of border
+
+
+12) void addLine(FILE *fp, int line)
+    return type - void
+    function parameters -   var1(pointer of FILE type ) , var2(int)
+    function adds blank lines after text is written
+
+
+13) void displayFile(FILE *fp, char name[100])
+    return type - void
+    function parameters -  var1(pointer of FILE type ) , var2(char array)
+    function displays name of file on screen
+
+
+14) void saveFile(char orig[100])
+    return type - void
+    function parameters -  var1(char array)
+    function saves orig as .txt file of user preferred name
+
+15) char* getName()
+    return type - string
+    function parameters -  -
+    function  accepts name of file(extension is .txt)
+
+16) int checkName(char name[100])
+    return type - int
+    function parameters -  var1(char array)
+    function checks name does not have any special character or extension
+ 
+
+17) void editByRewrite(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function rewrites the contents of an existing file by calling suitable functions
+
+
+18) void saveChanges(FILE *fp, char name[100])
+    return type - void
+    function parameters -  var1(pointer of FILE type ) , var2(char array)
+    function saves the user input with a name of his choice
+
+
+19) void editByAdd(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function edit an existing file by adding text at the end of file by calling suitable functions
+
+
+20) void readFromFile(FILE *fp, char name[100])
+    return type - void
+    function parameters -  var1(pointer of FILE type ) , var2(char array)
+    function reads text from a given file(new line is replaced by ..)
+
+
+21) void saveAs(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function creates a duplicate of an existing files and saves it with a new name
+
+
+22) void findWordOrPattern(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function finds the input word or pattern in an existing file
+
+
+23) void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
+    return type - void
+    function parameters -  var1(pointer of FILE type ), var2(char array), var3(char array)
+    function stores search results in search.txt
+
+
+24) void displaySearchResult(FILE *fp, char name[100])
+    return type - void
+    function parameters -  var1(pointer of FILE type ), var2(char array)
+    function displays and saves search results as per the user's wish
+
+
+25) void compareFiles(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function compares the contents of two files
+
+
+26) char* getData(FILE *fp)
+    return type - pointer
+    function parameters -  var1(pointer of FILE type )
+    function gets the data stored in a given file
+
+
+27) void deleteFile(FILE *fp)
+    return type - void
+    function parameters -  var1(pointer of FILE type )
+    function deletes an existing file
