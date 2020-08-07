@@ -1,3 +1,16 @@
+/* PLEASE EXECUTE CODE ON A FULL SIZED TERMINAL. PLACE home.txt IN THE SAME FOLDER AS THE .c FILE. */
+
+/* 
+PROBLEM ADDRESSED
+Console-based text editor using C having the following features:
+1. Open a nblank file, write content to it and save it with the desired name.
+2. Open an existing file, edit(by rewriting or by adding text) its contents and save it.
+3. Open an existing file and save it with a different name. The original file will continue to exist (similar to “save as” feature).
+4. Search for and highlight all occurrences of a pattern/word in a given file (similar to Find feature)
+5. Compare two given files and tell whether they are exactly the same or not
+6. Delete a file with the given name
+*/
+
 /* header file contains input/output related functions. */
 #include <stdio.h>
 
@@ -52,21 +65,21 @@ int main()
     system("clear");
     system("cat home.txt");
     FILE *fp;
-    int task=acceptChoice();     
+    int task=acceptChoice();     /* function definition is on line 90. */
     if(task==1)
-        writeAndSave(fp);
+        writeAndSave(fp);        /* function definition is on line 130. */
     else if(task==2)
-        editByRewrite(fp);       
+        editByRewrite(fp);       /* function definition is on line 401. */    
     else if(task==3)
-        editByAdd(fp);
+        editByAdd(fp);           /* function definition is on line 459. */
     else if(task==4)
-        saveAs(fp);
+        saveAs(fp);              /* function definition is on line 519. */
     else if(task==5)
-        findWordOrPattern(fp);  
+        findWordOrPattern(fp);   /* function definition is on line 551. */
     else if(task==6)
-        compareFiles(fp);
+        compareFiles(fp);        /* function definition is on line 642. */
     else if(task==7)
-        deleteFile(fp);
+        deleteFile(fp);          /* function definition is on line 683. */
     else
         printf("\033[1;31m OPTION UNAVAILABLE. \033[0m \n");    
     exit(0); 
@@ -132,11 +145,11 @@ void writeAndSave(FILE *fp)
     for(int i=0; i<2; i++)
         str[i]='.';
 
-    acceptInput();                      
-    str=correctInput();
+    acceptInput();                      /* function definition is on line 167. */                
+    str=correctInput();                 /* function definition is on line 201. */
     system("clear");                 
-    makeFile(fp);                       
-    displayFile(fp, "interface.txt");   
+    makeFile(fp);                       /* function definition is on line 238. */            
+    displayFile(fp, "interface.txt");   /* function definition is on line 324. */
     fp=fopen("interface.txt", "w");
     if(fp==NULL)
     {
@@ -145,7 +158,7 @@ void writeAndSave(FILE *fp)
     }
     fputs(str, fp);
     fclose(fp);
-    saveFile("interface.txt");         
+    saveFile("interface.txt");          /* function definition is on line 345. */
     str=NULL;
     free(str);
 }
@@ -224,11 +237,11 @@ char* correctInput()
 /* calls suitable functions to write text and make a border around it. */
 void makeFile(FILE *fp)
 {
-    moveOffsetVertical(fp, 5);      
-    makeHorizontalLine(fp);         
-    makeVerticalLine(fp);           
-    makeHorizontalLine(fp);         
-    moveOffsetVertical(fp, 5);      
+    moveOffsetVertical(fp, 5);      /* function definition is on line 248. */
+    makeHorizontalLine(fp);         /* function definition is on line 255. */
+    makeVerticalLine(fp);           /* function definition is on line 284. */
+    makeHorizontalLine(fp);         /* function definition is on line 255. */
+    moveOffsetVertical(fp, 5);      /* function definition is on line 248. */
 }
 
 /* moves the file pointer vertically down by given(i) lines. */
@@ -241,9 +254,9 @@ void moveOffsetVertical(FILE *fp, int i)
 /* makes a complete line of '*' border. */
 void makeHorizontalLine(FILE *fp)
 {
-    beginLine(fp);                          
-    moveOffsetHorizontal(fp, 101, '*');     
-    endLine(fp);                            
+    beginLine(fp);                          /* function definition is on line 270. */
+    moveOffsetHorizontal(fp, 101, '*');     /* function definition is on line 263. */
+    endLine(fp);                            /* function definition is on line 277. */
 }
 
 /* moves the file pointer horizontally by putting a given character(ch) a fixed no.(i) of times. */
@@ -256,7 +269,7 @@ void moveOffsetHorizontal(FILE *fp,int i, char ch)
 /* moves the file pointer horizontally by 28 spaces and puts a '*'. */
 void beginLine(FILE *fp)
 {
-    moveOffsetHorizontal(fp, 28, ' ');      
+    moveOffsetHorizontal(fp, 28, ' ');      /* function definition is on line 263. */
     fputc('*', fp);
 }
 
@@ -274,7 +287,7 @@ void makeVerticalLine(FILE *fp)
     int i, ind=0, j;
     while(ind<strlen(str))
     {
-        beginLine(fp);              
+        beginLine(fp);                      /* function definition is on line 270. */
         for(i=0; i<101; i++)
         {
             ch=str[ind];
@@ -291,7 +304,7 @@ void makeVerticalLine(FILE *fp)
                 break;
             }
         }
-        endLine(fp);               
+        endLine(fp);                        /* function definition is on line 277. */
     }
     addLine(fp, 2);                 
 }
@@ -301,9 +314,9 @@ void addLine(FILE *fp, int line)
 {
     for(int i=0; i<line; i++)
     {
-        beginLine(fp);                          
-        moveOffsetHorizontal(fp, 101, ' ');     
-        endLine(fp);                            
+        beginLine(fp);                          /* function definition is on line 270. */
+        moveOffsetHorizontal(fp, 101, ' ');     /* function definition is on line 263. */
+        endLine(fp);                            /* function definition is on line 277. */
     }
 }
 
@@ -323,7 +336,7 @@ void displayFile(FILE *fp, char name[100])
     else
     {
         printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
-        val = delete(name);
+        val = delete(name);                     /* function definition is on line 721. */
         exit(1);
     }
 }
@@ -334,7 +347,7 @@ void saveFile(char orig[100])
     char *name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();
+    name=getName();                             /* function definition is on line 356. */
     rename(orig, name);
     printf("\033[1;32m FILE HAS BEEN SAVED. \033[0m \n");
 }
@@ -352,7 +365,7 @@ char* getName()
     scanf("%s", name);
     while(check_val==0)
     {
-        check_val=checkName(name);          
+        check_val=checkName(name);              /* function definition is on line 381. */ 
         if(check_val==0)
         {
             /* Re-promts the user to enter name in acceptable format. */
@@ -391,7 +404,7 @@ void editByRewrite(FILE *fp)
     char*name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                 
+    name=getName();                                 /* function definition is on line 356. */
     fp=fopen(name, "r");
     if(fp==NULL)
     {
@@ -403,9 +416,9 @@ void editByRewrite(FILE *fp)
     str[0]='\0';
     for(int i=0; i<2; i++)
         str[i]='.';
-    acceptInput();                  
-    str=correctInput();             
-    saveChanges(fp, name);          
+    acceptInput();                                  /* function definition is on line 167. */
+    str=correctInput();                             /* function definition is on line 201. */
+    saveChanges(fp, name);                          /* function definition is on line 427. */
     name=NULL;
     free(name);
 }
@@ -427,8 +440,8 @@ void saveChanges(FILE *fp, char name[100])
             printf("\033[1;31m UNABLE TO PERFORM TASK. \033[0m \n");
             exit(1);
         }
-        makeFile(hp);
-        displayFile(hp, "interface.txt");
+        makeFile(hp);                           /* function definition is on line 238. */
+        displayFile(hp, "interface.txt");       /* function definition is on line 324. */
         fputs(str, fp);
         fclose(fp);
         printf("\033[1;32m CHANGES HAVE BEEN SAVED. \033[0m \n");
@@ -439,7 +452,7 @@ void saveChanges(FILE *fp, char name[100])
     free(str);
     name=NULL;
     free(name);
-    val=delete("interfac.txt");
+    val=delete("interfac.txt");                 /* function definition is on line 721. */
 }
 
 /* edit an existing file by adding text at the end of file by calling suitable functions. */
@@ -449,10 +462,10 @@ void editByAdd(FILE *fp)
     char*name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                     
-    readFromFile(fp, name);             
-    acceptInput();                      
-    str=correctInput();                 
+    name=getName();                             /* function definition is on line 356. */
+    readFromFile(fp, name);                     /* function definition is on line 475. */
+    acceptInput();                              /* function definition is on line 167. */
+    str=correctInput();                         /* function definition is on line 201. */
     saveChanges(fp, name);              
     name=NULL;
     free(name);
@@ -510,15 +523,15 @@ void saveAs(FILE *fp)
     char *name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                         
+    name=getName();                          /* function definition is on line 356. */ 
     fp=fopen(name, "r");
     if(fp==NULL)
     {
         printf("\033[1;31m FILE CANNOT BE OPENED IN READ MODE. MAYBE THE FILE DOESN'T EXIST. \033[0m \n");
         exit(1);
     }
-    readFromFile(fp, name);
-    str=correctInput();
+    readFromFile(fp, name);                 /* function definition is on line 475. */
+    str=correctInput();                     /* function definition is on line 201. */
     FILE *hp;
     hp = fopen("interface.txt", "w");
     if(hp==NULL)
@@ -527,12 +540,12 @@ void saveAs(FILE *fp)
         exit(1);
     }
     system("clear");
-    makeFile(hp);
-    displayFile(hp, "interface.txt");
+    makeFile(hp);                           /* function definition is on line 238. */
+    displayFile(hp, "interface.txt");       /* function definition is on line 324. */
     fclose(fp);
     sprintf(buf2, "cp %s %s", name, "duplicate.txt");
     system(buf2);
-    saveFile("duplicate.txt");                      
+    saveFile("duplicate.txt");              /* function definition is on line 345. */
 }
 
 void findWordOrPattern(FILE *fp)
@@ -547,11 +560,11 @@ void findWordOrPattern(FILE *fp)
     char*name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                                 
-    readFromFile(fp, name);                         
-    str=correctInput();                             
-    occurence = makeSearchResult(fp,name, word_to_search);      
-    displaySearchResult(fp, "search.txt", occurence);          
+    name=getName();                                             /* function definition is on line 356. */                       
+    readFromFile(fp, name);                                     /* function definition is on line 475. */
+    str=correctInput();                                         /* function definition is on line 201. */
+    occurence = makeSearchResult(fp,name, word_to_search);      /* function definition is on line 571. */
+    displaySearchResult(fp, "search.txt", occurence);           /* function definition is on line 622. */
 }
 
 /* stores search results in search.txt */
@@ -631,10 +644,10 @@ void compareFiles(FILE *fp)
     char *data_of_file1=NULL, *data_of_file2=NULL;
     data_of_file1=malloc(size);
     data_of_file1[0]='\0';
-    data_of_file1=getData(fp);                      
+    data_of_file1=getData(fp);                      /* function definition is on line 663. */            
     data_of_file2=malloc(size);
     data_of_file2[0]='\0';
-    data_of_file2=getData(fp);                      
+    data_of_file2=getData(fp);                      /* function definition is on line 663. */
     system("clear");
     if(strcmp(data_of_file1, data_of_file2)==0)
         printf("\033[1;32m THE TWO FILES ARE EXACTLY SAME. \033[0m \n");
@@ -654,9 +667,9 @@ char* getData(FILE *fp)
     data_of_file[0]='\0';
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();
-    readFromFile(fp, name); 
-    str=correctInput();     
+    name=getName();                                 /* function definition is on line 356. */
+    readFromFile(fp, name);                         /* function definition is on line 475. */
+    str=correctInput();                             /* function definition is on line 201. */
     data_of_file=malloc(size);
     strcpy(data_of_file, str);
     str=NULL;
@@ -674,7 +687,7 @@ void deleteFile(FILE *fp)
     char *name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                                
+    name=getName();                                 /* function definition is on line 356. */
     fp=fopen(name, "r");
     if(fp==NULL)
     {
@@ -687,7 +700,7 @@ void deleteFile(FILE *fp)
     system("clear");
     if(conf==1)
     {
-        val=delete(name);
+        val=delete(name);                           /* function definition is on line 721. */
         if(val==0)
             printf("\033[1;32m FILE HAS BEEN DELETED. \033[0m \n");
         else
