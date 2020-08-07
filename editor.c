@@ -44,7 +44,7 @@ void displaySearchResult(FILE *fp, char name[100], int occ);
 void compareFiles(FILE *fp);
 char* getData(FILE *fp);
 void deleteFile(FILE *fp);
-void addAtPositon(FILE *fp);
+int delete(char name[100]);
 
 /* displays home page as landing page. */
 int main() 
@@ -318,6 +318,14 @@ void displayFile(FILE *fp, char name[100])
     scanf("%d", &val);
     if (val==1)
         system(buf);
+    else if (val==2)
+        printf(" ");
+    else
+    {
+        printf("\033[1;31m CHOICE UNAVAILABLE. PROGRAM HAS BEEN TERMINATED. \033[0m \n");
+        val = delete(name);
+        exit(1);
+    }
 }
 
 /* saves orig as .txt file of user preferred name. */
@@ -431,6 +439,7 @@ void saveChanges(FILE *fp, char name[100])
     free(str);
     name=NULL;
     free(name);
+    val=delete("interfac.txt");
 }
 
 /* edit an existing file by adding text at the end of file by calling suitable functions. */
@@ -678,7 +687,7 @@ void deleteFile(FILE *fp)
     system("clear");
     if(conf==1)
     {
-        val=remove(name);
+        val=delete(name);
         if(val==0)
             printf("\033[1;32m FILE HAS BEEN DELETED. \033[0m \n");
         else
@@ -696,4 +705,9 @@ void deleteFile(FILE *fp)
     }
 }
 
+int delete(char name[100])
+{
+    int del_conf = remove(name);
+    return del_conf;
+}
 /* ******THANK YOU. ****** */
