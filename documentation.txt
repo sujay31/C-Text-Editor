@@ -129,15 +129,15 @@ Documentation Of User Defined Functions
     function finds the input word or pattern in an existing file
 
 
-23) void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
-    return type - void
+23) int makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
+    return type - int
     function parameters -  var1(pointer of FILE type ), var2(char array), var3(char array)
     function stores search results in search.txt
 
 
-24) void displaySearchResult(FILE *fp, char name[100])
+24) void displaySearchResult(FILE *fp, char name[100], int occ)
     return type - void
-    function parameters -  var1(pointer of FILE type ), var2(char array)
+    function parameters -  var1(pointer of FILE type ), var2(char array), var3(int)
     function displays and saves search results as per the user's wish
 
 

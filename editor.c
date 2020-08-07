@@ -39,8 +39,8 @@ void editByAdd(FILE *fp);
 void readFromFile(FILE *fp, char name[100]);
 void saveAs(FILE *fp);;
 void findWordOrPattern(FILE *fp);
-void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] );
-void displaySearchResult(FILE *fp, char name[100]);
+int makeSearchResult(FILE *fp, char name[100], char word_to_search[25] );
+void displaySearchResult(FILE *fp, char name[100], int occ);
 void compareFiles(FILE *fp);
 char* getData(FILE *fp);
 void deleteFile(FILE *fp);
@@ -339,7 +339,7 @@ char* getName()
     int check_val=0;
 
     /* file name can have only letters or digits. No extension or special character is allowed. */
-    printf("\n \033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
+    printf("\033[1;33m ENTER NAME OF FILE. EXTENSION USED IS .txt \033[0m \n");
     scanf("%s", name);
     while(check_val==0)
     {
@@ -347,7 +347,7 @@ char* getName()
         if(check_val==0)
         {
             /* Re-promts the user to enter name in acceptable format. */
-            printf(" \033[1;33m ENTER NAME OF FILE. \033[0m \n");
+            printf("\033[1;33m ENTER NAME OF FILE. \033[0m \n");
             scanf("%s", name);
         }
     }
@@ -530,6 +530,8 @@ void findWordOrPattern(FILE *fp)
     /* only a word/pattern of length upto 25 characters can be searched. */
     char word_to_search[25];
 
+    int occurence;
+
     printf("\033[1;33m WORD/PATTERN TO SEARCH FOR. \033[0m \n");
     scanf("%s", word_to_search);
     char*name=NULL;
@@ -538,14 +540,14 @@ void findWordOrPattern(FILE *fp)
     name=getName();                                 
     readFromFile(fp, name);                         
     str=correctInput();                             
-    makeSearchResult(fp,name, word_to_search);      
-    displaySearchResult(fp, "search.txt");          
+    occurence = makeSearchResult(fp,name, word_to_search);      
+    displaySearchResult(fp, "search.txt", occurence);          
 }
 
 /* stores search results in search.txt */
-void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
+int makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
 {
-    int i, j, word, flag=0;
+    int i, j, word, flag=0, count=0;
 
     /* ***file searched should not contain more than 1000 words.***
       ***max length of a word is taken to be 30 characters.*** */
@@ -566,6 +568,7 @@ void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
             if(strstr(new_str[word],word_to_search))
             {
                 fputs("\033[1;32m ", fp);
+                count++;
                 
                 /* flag helps in adding color if word formed matches searched word. */
                 flag=1;
@@ -589,40 +592,27 @@ void makeSearchResult(FILE *fp, char name[100], char word_to_search[25] )
     str=NULL;
     free(str);
     fclose(fp);
+    return count;
 }
 
 /* displays and saves search results as per the user's wish. */
-void displaySearchResult(FILE *fp, char name[100])
+void displaySearchResult(FILE *fp, char name[100], int occ)
 {
     int val;
-    char buf[200];
-    sprintf(buf, "cat %s", name);
-    printf("\033[1;33m DO YOU WANT TO SEE THE SEARCH RESULT? TYPE 1 FOR YES AND 2 FOR NO. \033[0m \n");
-    scanf("%d", &val);
-    if (val==1)
-        system(buf);
+    if(occ > 0)
+    {
+        printf("\033[1;33m %d occurrences found. \033[0m \n", occ);
+        printf("\033[1;33m Search results are stored in search.txt \033[0m \n");
+        printf("\033[1;33m To see the results, use \033[1;32m cat search.txt \033[0m \n");
+    }
     else
     {
-        printf("\033[1;31m TASK TERMINATED. \033[0m \n"); 
-        exit(1);
-    }
-    printf("\n \033[1;33m DO YOU WANT TO STORE THE SEARCH RESULT? TYPE 1 FOR YES AND 2 FOR NO. \033[0m \n");
-    scanf("%d", &val);
-    if (val==1)
-    {
-        name=getName();                             
-        rename("search.txt", name);
-    }
-    else 
-    {    
+        printf("\033[1;31m No occurrence found. \033[0m \n");
         val=remove("search.txt");
         if(val==1)
-        {    
-            printf("\033[1;31m SEARCH RESULTS NOT DELETED. \033[0m");
             exit(1);
-        }
     }
-    printf("\033[1;33m TASK DONE. \033[0m \n"); 
+    printf("\n\033[1;33m TASK DONE. \033[0m \n"); 
 }
 
 /* compares the contents of two files. */
@@ -674,7 +664,7 @@ void deleteFile(FILE *fp)
     char *name=NULL;
     name=malloc(100*sizeof(char));
     name[0]='\0';
-    name=getName();                                 /* function definition is on line 354. */
+    name=getName();                                
     fp=fopen(name, "r");
     if(fp==NULL)
     {
